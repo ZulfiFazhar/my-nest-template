@@ -97,7 +97,7 @@ PORT=3030
 DATABASE_HOST=localhost
 DATABASE_PORT=5442
 DATABASE_USERNAME=postgres
-DATABASE_PASSWORD=postgres
+DATABASE_PASSWORD=dev_postgress_pw
 DATABASE_NAME=myid_db
 
 # TypeORM Configuration
@@ -266,7 +266,7 @@ docker compose down -v
 Access Adminer: http://localhost:8080
 - **Server**: postgres
 - **Username**: postgres
-- **Password**: postgres
+- **Password**: dev_postgress_pw
 - **Database**: myid_db
 
 ### Building Docker Image
@@ -445,7 +445,7 @@ return wrapResponse(ResponseMessages.SUCCESS, data);
 | `DATABASE_HOST` | localhost | PostgreSQL host |
 | `DATABASE_PORT` | 5442 | PostgreSQL port |
 | `DATABASE_USERNAME` | postgres | Database user |
-| `DATABASE_PASSWORD` | postgres | Database password |
+| `DATABASE_PASSWORD` | dev_postgress_pw | Database password |
 | `DATABASE_NAME` | myid_db | Database name |
 | `DATABASE_SYNCHRONIZE` | true | Auto-create schema (dev only) |
 | `DATABASE_LOGGING` | true | Log SQL queries |
