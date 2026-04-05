@@ -91,11 +91,11 @@ JWT_ACCESS_SECRET=your-super-secret-key-change-in-production
 JWT_ACCESS_EXPIRES_IN=15m
 
 # Server Configuration
-PORT=3000
+PORT=3030
 
 # Database Configuration
 DATABASE_HOST=localhost
-DATABASE_PORT=5432
+DATABASE_PORT=5442
 DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=postgres
 DATABASE_NAME=myid_db
@@ -115,7 +115,7 @@ docker compose up -d postgres
 
 **Option B: Local PostgreSQL**
 
-Ensure PostgreSQL is running on port 5432.
+Ensure PostgreSQL is running on port 5442.
 
 ## Running the Application
 
@@ -126,9 +126,9 @@ npm run start:dev
 ```
 
 The application will be available at:
-- **API**: http://localhost:3000/api
-- **Swagger Docs**: http://localhost:3000/docs
-- **Health Check**: http://localhost:3000/api
+- **API**: http://localhost:3030/api
+- **Swagger Docs**: http://localhost:3030/docs
+- **Health Check**: http://localhost:3030/api
 
 ### Production Mode
 
@@ -141,7 +141,7 @@ npm run start:prod
 
 ### Swagger UI
 
-Access interactive API documentation at `http://localhost:3000/docs`
+Access interactive API documentation at `http://localhost:3030/docs`
 
 Features:
 - Try out endpoints directly in the browser
@@ -153,7 +153,7 @@ Features:
 
 **Register a new user:**
 ```bash
-curl -X POST http://localhost:3000/api/auth/register \
+curl -X POST http://localhost:3030/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -164,7 +164,7 @@ curl -X POST http://localhost:3000/api/auth/register \
 
 **Login:**
 ```bash
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST http://localhost:3030/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -174,7 +174,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 
 **Access protected endpoint:**
 ```bash
-curl -X GET http://localhost:3000/api/auth/me \
+curl -X GET http://localhost:3030/api/auth/me \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -259,8 +259,8 @@ docker compose down -v
 
 | Service | Port | Description |
 |---------|------|-------------|
-| app | 3000 | NestJS API |
-| postgres | 5432 | PostgreSQL database |
+| app | 3030 | NestJS API |
+| postgres | 5442 | PostgreSQL database |
 | adminer | 8080 | Database management UI |
 
 Access Adminer: http://localhost:8080
@@ -439,11 +439,11 @@ return wrapResponse(ResponseMessages.SUCCESS, data);
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PORT` | 3000 | Server port |
+| `PORT` | 3030 | Server port |
 | `JWT_ACCESS_SECRET` | - | JWT signing secret (required) |
 | `JWT_ACCESS_EXPIRES_IN` | 15m | JWT expiration time |
 | `DATABASE_HOST` | localhost | PostgreSQL host |
-| `DATABASE_PORT` | 5432 | PostgreSQL port |
+| `DATABASE_PORT` | 5442 | PostgreSQL port |
 | `DATABASE_USERNAME` | postgres | Database user |
 | `DATABASE_PASSWORD` | postgres | Database password |
 | `DATABASE_NAME` | myid_db | Database name |

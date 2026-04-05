@@ -16,7 +16,7 @@ RUN bun install
 COPY . .
 
 # Expose port
-EXPOSE 3000
+EXPOSE 3030
 
 # Development command
 CMD ["bun", "run", "start:dev"]
@@ -45,6 +45,6 @@ RUN bun run build
 # Install only production dependencies
 RUN rm -rf node_modules && bun install --production
 
-EXPOSE 3000
+EXPOSE 3030
 
 CMD ["bun", "dist/main.js"]
