@@ -50,13 +50,16 @@ describe('HealthService', () => {
 
       healthCheckService.check.mockImplementation((checks) => {
         // Execute the checks
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         checks.forEach((check) => check());
-        return Promise.resolve(healthResult as any);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return Promise.resolve(healthResult) as any;
       });
 
       const result = await service.checkHealth();
 
       expect(result).toBeDefined();
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(healthCheckService.check).toHaveBeenCalled();
     });
 
@@ -72,11 +75,17 @@ describe('HealthService', () => {
         details: {},
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       healthCheckService.check.mockResolvedValue(healthResult as any);
-      db.pingCheck.mockReturnValue(Promise.resolve({ database: { status: 'up' } } as any));
+
+      db.pingCheck.mockReturnValue(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        Promise.resolve({ database: { status: 'up' } }) as any,
+      );
 
       await service.checkHealth();
 
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(healthCheckService.check).toHaveBeenCalled();
     });
   });

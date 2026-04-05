@@ -17,7 +17,6 @@ describe('AuthService', () => {
   let service: AuthService;
   let usersService: jest.Mocked<UsersService>;
   let jwtService: jest.Mocked<JwtService>;
-  let configService: jest.Mocked<ConfigService>;
 
   const mockUser: User = {
     id: '1',
@@ -65,7 +64,6 @@ describe('AuthService', () => {
     service = module.get<AuthService>(AuthService);
     usersService = module.get(UsersService);
     jwtService = module.get(JwtService);
-    configService = module.get(ConfigService);
   });
 
   afterEach(() => {
@@ -80,25 +78,30 @@ describe('AuthService', () => {
       const result = await service.validateUser('test@example.com', 'password');
 
       expect(result).toEqual(mockUser);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(usersService.findByEmail).toHaveBeenCalledWith('test@example.com');
-      expect(usersService.validatePassword).toHaveBeenCalledWith(mockUser, 'password');
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(usersService.validatePassword).toHaveBeenCalledWith(
+        mockUser,
+        'password',
+      );
     });
 
     it('should throw UnauthorizedException when user not found', async () => {
       usersService.findByEmail.mockResolvedValue(null);
 
-      await expect(service.validateUser('test@example.com', 'password')).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.validateUser('test@example.com', 'password'),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should throw UnauthorizedException when password is invalid', async () => {
       usersService.findByEmail.mockResolvedValue(mockUser);
       usersService.validatePassword.mockResolvedValue(false);
 
-      await expect(service.validateUser('test@example.com', 'wrongpassword')).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.validateUser('test@example.com', 'wrongpassword'),
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 
@@ -126,7 +129,7 @@ describe('AuthService', () => {
     };
 
     it('should create user and return tokens on successful registration', async () => {
-      const newUser = { ...mockUser, email: registerDto.email };
+      const newUser: User = { ...mockUser, email: registerDto.email };
       const token = 'jwt-token';
 
       usersService.create.mockResolvedValue(newUser);
@@ -136,6 +139,7 @@ describe('AuthService', () => {
 
       expect(result.user).toBeDefined();
       expect(result.tokens.accessToken).toBe(token);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(usersService.create).toHaveBeenCalledWith(
         registerDto.email,
         registerDto.password,
@@ -147,7 +151,9 @@ describe('AuthService', () => {
     it('should throw ConflictException when email already exists', async () => {
       usersService.create.mockRejectedValue(new ConflictException());
 
-      await expect(service.register(registerDto)).rejects.toThrow(ConflictException);
+      await expect(service.register(registerDto)).rejects.toThrow(
+        ConflictException,
+      );
     });
   });
 

@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import * as jwt from 'jsonwebtoken';
 import { UsersService } from '../users/users.service';
 import { User, UserRole } from '../users/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
@@ -103,7 +104,7 @@ export class AuthService {
       secret: this.configService.getOrThrow<string>('auth.jwtAccessSecret'),
       expiresIn: this.configService.getOrThrow<string>(
         'auth.jwtAccessExpiresIn',
-      ) as any,
+      ) as jwt.SignOptions['expiresIn'],
     });
 
     return {

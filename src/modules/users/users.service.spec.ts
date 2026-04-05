@@ -5,7 +5,9 @@ import { ConflictException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User, UserRole } from './entities/user.entity';
 
-type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
+type MockRepository<T = any> = Partial<
+  Record<keyof Repository<any>, jest.Mock>
+>;
 
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOne: jest.fn(),

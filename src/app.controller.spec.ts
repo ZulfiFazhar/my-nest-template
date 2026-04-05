@@ -3,6 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { wrapResponse } from './common/utils/response.util';
 
+// Type for mock response
+interface MockResponse {
+  message: string;
+  data: unknown;
+}
+
 jest.mock('./common/utils/response.util');
 
 describe('AppController', () => {
@@ -16,10 +22,12 @@ describe('AppController', () => {
 
     appController = app.get<AppController>(AppController);
 
-    (wrapResponse as jest.Mock).mockImplementation((message, data) => ({
-      message,
-      data,
-    }));
+    (wrapResponse as jest.Mock).mockImplementation(
+      (message: string, data: unknown): MockResponse => ({
+        message,
+        data,
+      }),
+    );
   });
 
   describe('root', () => {

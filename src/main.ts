@@ -41,8 +41,8 @@ async function bootstrap() {
     customSiteTitle: 'My ID API Documentation',
   });
 
-  const configService = app.get(ConfigService);
-  const port = configService.get('PORT') || 3000;
+  const configService = app.get<ConfigService>(ConfigService);
+  const port = configService.get<number>('PORT') || 3000;
 
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}/api`);

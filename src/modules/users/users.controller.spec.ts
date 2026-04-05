@@ -3,7 +3,10 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { wrapResponse, ResponseMessages } from '../../common/utils/response.util';
+import {
+  wrapResponse,
+  ResponseMessages,
+} from '../../common/utils/response.util';
 import { User, UserRole } from './entities/user.entity';
 
 jest.mock('../../common/utils/response.util');
@@ -57,10 +60,12 @@ describe('UsersController', () => {
     usersService = module.get(UsersService);
 
     // Setup wrapResponse mock
-    (wrapResponse as jest.Mock).mockImplementation((message, data) => ({
-      message,
-      data,
-    }));
+    (wrapResponse as jest.Mock).mockImplementation(
+      (message: string, data: unknown) => ({
+        message,
+        data,
+      }),
+    );
   });
 
   afterEach(() => {
@@ -73,6 +78,7 @@ describe('UsersController', () => {
 
       const result = await controller.findAll();
 
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(usersService.findAll).toHaveBeenCalled();
       expect(wrapResponse).toHaveBeenCalledWith(
         ResponseMessages.USERS_FETCHED,
@@ -87,7 +93,9 @@ describe('UsersController', () => {
       );
       expect(result).toEqual({
         message: ResponseMessages.USERS_FETCHED,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         data: expect.arrayContaining([
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           expect.not.objectContaining({ passwordHash: expect.anything() }),
         ]),
       });
@@ -98,8 +106,17 @@ describe('UsersController', () => {
 
       await controller.findAll();
 
-      const sanitizedData = (wrapResponse as jest.Mock).mock.calls[0][1];
-      sanitizedData.forEach((user: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const sanitizedData: unknown[] =
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        (wrapResponse as jest.Mock).mock.calls[0][1];
+
+      sanitizedData.forEach((item) => {
+        const user = item as {
+          passwordHash: unknown;
+          hashPassword: unknown;
+          validatePassword: unknown;
+        };
         expect(user).not.toHaveProperty('passwordHash');
         expect(user).not.toHaveProperty('hashPassword');
         expect(user).not.toHaveProperty('validatePassword');
@@ -108,8 +125,8 @@ describe('UsersController', () => {
   });
 
   describe('adminOnly', () => {
-    it('should return wrapped response for admin access', async () => {
-      const result = await controller.adminOnly();
+    it('should return wrapped response for admin access', () => {
+      const result = controller.adminOnly();
 
       expect(wrapResponse).toHaveBeenCalledWith(
         'Admin access granted',

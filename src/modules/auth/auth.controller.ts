@@ -18,11 +18,13 @@ import { RegisterDto } from './dto/register.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import type { RequestUser } from './strategies/jwt.strategy';
 import { Public } from './decorators/public.decorator';
-import { wrapResponse, ResponseMessages } from '../../common/utils/response.util';
+import {
+  wrapResponse,
+  ResponseMessages,
+} from '../../common/utils/response.util';
 
 @ApiTags('Authentication')
 @Controller('auth')
-
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

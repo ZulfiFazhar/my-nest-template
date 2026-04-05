@@ -14,6 +14,8 @@ export class AppController {
   @ApiOperation({ summary: 'Hello World endpoint' })
   @ApiResponse({ status: 200, description: 'Returns hello world message' })
   getHello() {
-    return wrapResponse('Hello World!', { message: this.appService.getHello() });
+    return wrapResponse('Hello World!', {
+      message: this.appService.getHello(),
+    });
   }
 }

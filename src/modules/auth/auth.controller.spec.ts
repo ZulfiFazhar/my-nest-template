@@ -1,11 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { RequestUser } from './strategies/jwt.strategy';
-import { wrapResponse, ResponseMessages } from '../../common/utils/response.util';
+import {
+  wrapResponse,
+  ResponseMessages,
+} from '../../common/utils/response.util';
 
 jest.mock('../../common/utils/response.util');
 
@@ -50,10 +52,12 @@ describe('AuthController', () => {
     authService = module.get(AuthService);
 
     // Setup wrapResponse mock
-    (wrapResponse as jest.Mock).mockImplementation((message, data) => ({
-      message,
-      data,
-    }));
+    (wrapResponse as jest.Mock).mockImplementation(
+      (message: string, data: unknown) => ({
+        message,
+        data,
+      }),
+    );
   });
 
   afterEach(() => {
@@ -72,8 +76,15 @@ describe('AuthController', () => {
 
       const result = await controller.login(loginDto);
 
-      expect(authService.login).toHaveBeenCalledWith(loginDto.email, loginDto.password);
-      expect(wrapResponse).toHaveBeenCalledWith(ResponseMessages.LOGIN_SUCCESS, loginResult);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(authService.login).toHaveBeenCalledWith(
+        loginDto.email,
+        loginDto.password,
+      );
+      expect(wrapResponse).toHaveBeenCalledWith(
+        ResponseMessages.LOGIN_SUCCESS,
+        loginResult,
+      );
       expect(result).toEqual({
         message: ResponseMessages.LOGIN_SUCCESS,
         data: loginResult,
@@ -94,8 +105,12 @@ describe('AuthController', () => {
 
       const result = await controller.register(registerDto);
 
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(authService.register).toHaveBeenCalledWith(registerDto);
-      expect(wrapResponse).toHaveBeenCalledWith(ResponseMessages.REGISTER_SUCCESS, registerResult);
+      expect(wrapResponse).toHaveBeenCalledWith(
+        ResponseMessages.REGISTER_SUCCESS,
+        registerResult,
+      );
       expect(result).toEqual({
         message: ResponseMessages.REGISTER_SUCCESS,
         data: registerResult,
@@ -109,8 +124,14 @@ describe('AuthController', () => {
 
       const result = await controller.getCurrentUser(mockRequestUser);
 
-      expect(authService.getCurrentUser).toHaveBeenCalledWith(mockRequestUser.userId);
-      expect(wrapResponse).toHaveBeenCalledWith(ResponseMessages.USER_FETCHED, mockUser);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      expect(authService.getCurrentUser).toHaveBeenCalledWith(
+        mockRequestUser.userId,
+      );
+      expect(wrapResponse).toHaveBeenCalledWith(
+        ResponseMessages.USER_FETCHED,
+        mockUser,
+      );
       expect(result).toEqual({
         message: ResponseMessages.USER_FETCHED,
         data: mockUser,
@@ -122,7 +143,10 @@ describe('AuthController', () => {
 
       const result = await controller.getCurrentUser(mockRequestUser);
 
-      expect(wrapResponse).toHaveBeenCalledWith(ResponseMessages.USER_FETCHED, null);
+      expect(wrapResponse).toHaveBeenCalledWith(
+        ResponseMessages.USER_FETCHED,
+        null,
+      );
       expect(result).toEqual({
         message: ResponseMessages.USER_FETCHED,
         data: null,

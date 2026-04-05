@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { TestAppModule } from './test-app.module';
+import { ApiResponse } from '../src/common/interfaces/api-response.interface';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -17,13 +18,12 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET) should return Hello World in wrapped format', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/')
-      .expect(200);
+    const response = await request(app.getHttpServer()).get('/').expect(200);
+    const body = response.body as ApiResponse<{ message: string }>;
 
-    expect(response.body).toHaveProperty('message');
-    expect(response.body).toHaveProperty('data');
-    expect(response.body.message).toBe('Hello World!');
+    expect(body).toHaveProperty('message');
+    expect(body).toHaveProperty('data');
+    expect(body.message).toBe('Hello World!');
   });
 
   afterAll(async () => {
