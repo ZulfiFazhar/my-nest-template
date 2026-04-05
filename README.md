@@ -192,9 +192,7 @@ All API responses follow a standardized format:
 ```json
 {
   "message": "Success",
-  "data": { ... },
-  "timestamp": "2024-01-15T10:30:00.000Z",
-  "path": "/api/endpoint"
+  "data": { ... }
 }
 ```
 
@@ -385,9 +383,7 @@ return { id: 1, name: "John" };
 // Client receives:
 {
   "message": "Success",
-  "data": { "id": 1, "name": "John" },
-  "timestamp": "2024-01-15T10:30:00.000Z",
-  "path": "/api/users"
+  "data": { "id": 1, "name": "John" }
 }
 ```
 

@@ -5,7 +5,6 @@ import {
   CallHandler,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Response } from 'express';
 import { ApiResponse } from '../interfaces/api-response.interface';
 
@@ -17,9 +16,7 @@ export class TransformResponseInterceptor<T>
     context: ExecutionContext,
     next: CallHandler<T>,
   ): Observable<ApiResponse<T>> {
-    const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse<Response>();
-    const path = request.url;
 
     return next.handle().pipe(
       map((data: T) => {
@@ -28,8 +25,6 @@ export class TransformResponseInterceptor<T>
           return {
             message: data.message,
             data: data.data as T,
-            timestamp: new Date().toISOString(),
-            path,
           };
         }
 
@@ -40,8 +35,6 @@ export class TransformResponseInterceptor<T>
         return {
           message,
           data,
-          timestamp: new Date().toISOString(),
-          path,
         };
       }),
     );

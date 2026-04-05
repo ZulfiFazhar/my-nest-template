@@ -27,8 +27,6 @@ export class HealthController {
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
       },
-      timestamp: new Date().toISOString(),
-      path: '/api',
     };
   }
 }

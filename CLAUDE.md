@@ -47,7 +47,7 @@ This is a NestJS (v11) TypeScript backend application using Node.js ESM modules 
 
 - **Base URL:** `http://localhost:3000/api`
 - **Swagger Docs:** `http://localhost:3000/docs`
-- **Health Check:** `GET /api` (returns `{message, data, timestamp, path}` format)
+- **Health Check:** `GET /api` (returns `{message, data}` format)
 - **Hello World:** `GET /` (root, non-prefixed)
 
 ### Module Structure
@@ -80,9 +80,7 @@ All API responses follow a standardized format via `TransformResponseInterceptor
 ```json
 {
   "message": "Success",
-  "data": { ... },
-  "timestamp": "2024-01-15T10:30:00.000Z",
-  "path": "/api/endpoint"
+  "data": { ... }
 }
 ```
 
