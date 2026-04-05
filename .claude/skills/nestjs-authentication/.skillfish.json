@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "nestjs-authentication",
+  "owner": "agentivecity",
+  "repo": "skillfactory",
+  "path": ".claude/skills/nestjs-authentication",
+  "branch": "main",
+  "sha": "724bf8e947dad980b86d0b0c9d31f158578b3d96",
+  "source": "manual"
+}
