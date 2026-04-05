@@ -1,5 +1,5 @@
 # Development stage
-FROM node:22-alpine AS development
+FROM oven/bun:1-alpine AS development
 
 WORKDIR /usr/src/app
 
@@ -9,8 +9,8 @@ RUN apk add --no-cache python3 make g++
 # Copy package files
 COPY package.json bun.lock ./
 
-# Install dependencies (use npm for compatibility)
-RUN npm install
+# Install dependencies using Bun
+RUN bun install
 
 # Copy source code
 COPY . .
@@ -19,10 +19,10 @@ COPY . .
 EXPOSE 3000
 
 # Development command
-CMD ["npm", "run", "start:dev"]
+CMD ["bun", "run", "start:dev"]
 
 # Production stage
-FROM node:22-alpine AS production
+FROM oven/bun:1-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -34,17 +34,17 @@ RUN apk add --no-cache python3 make g++
 
 COPY package.json bun.lock ./
 
-# Install production dependencies only
-RUN npm install --only=production
+# Install all dependencies (needed for build)
+RUN bun install
 
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN bun run build
 
-# Remove dev dependencies after build
-RUN npm prune --production
+# Install only production dependencies
+RUN rm -rf node_modules && bun install --production
 
 EXPOSE 3000
 
-CMD ["node", "dist/main"]
+CMD ["bun", "dist/main.js"]
